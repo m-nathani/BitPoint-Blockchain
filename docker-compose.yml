@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  node-1:
+    container_name: bitpoint-node-1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - HTTP_PORT=3003
+      - P2P_PORT=6003
+    volumes:
+      - './:/src'
+    ports:
+      - 3003:3003
+      - 6003:6003
+  node-2:
+    container_name: bitpoint-node-2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - HTTP_PORT=3004
+      - P2P_PORT=6004
+    volumes:
+      - './:/src'
+    ports:
+      - 3004:3004
+      - 6004:6004
+  node-3:
+    container_name: bitpoint-node-3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - HTTP_PORT=3005
+      - P2P_PORT=6005
+    volumes:
+      - './:/src'
+    ports:
+      - 3005:3005
+      - 600:6005
+    

@@ -1,3 +1,4 @@
+require('dotenv').config()
 import * as  bodyParser from 'body-parser';
 import * as express from 'express';
 import * as _ from 'lodash';     
@@ -5,12 +6,15 @@ import * as _ from 'lodash';
 import {Block, generateNextBlock, getBlockchain} from './blockchain';
 import {connectToPeers, getSockets, initP2PServer} from './p2p';
 
-const httpPort: number = parseInt(process.env.HTTP_PORT) || 3001;
-const p2pPort: number = parseInt(process.env.P2P_PORT) || 6001;
+const httpPort: number = parseInt(process.env.HTTP_PORT) || 3003;
+const p2pPort: number = parseInt(process.env.P2P_PORT) || 6003;
+
 
 const initHttpServer = (myHttpPort: number) => {
     const app = express();
     app.use(bodyParser.json());
+
+    // connectToPeers(["ws://localhost:6005", "ws://localhost:6004"]);
 
     app.use((err, req, res, next) => {
         if (err) {
@@ -40,8 +44,8 @@ const initHttpServer = (myHttpPort: number) => {
     app.get('/peers', (req, res) => {
         res.send(getSockets().map((s: any) => s._socket.remoteAddress + ':' + s._socket.remotePort));
     });
-    app.post('/addPeer', (req, res) => {
-        connectToPeers(req.body.peer);
+    app.post('/addPeers', (req, res) => {
+        connectToPeers(req.body.peers);
         res.send();
     });
 

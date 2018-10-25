@@ -46,40 +46,45 @@
 ```
 
 
+## Installation with Docker
+```
+docker-compose up --build
+```
 
 ## Installation
-
 ```
 npm install
 ```
 
 ### Useful commands
 ```
-npm start
+HTTP_PORT=3003 P2P_PORT=6003 npm start
 ```
 
 ##### Get blockchain
 ```
-curl http://localhost:3001/blocks
+curl http://localhost:3003/blocks
 ```
 
 ##### Mine the first block with only a coinbase transaction
 ```
-curl -H "Content-type:application/json" --data '{"data" : [{"txIns":[{"signature":"","txOutId":"","txOutIndex":1}],"txOuts":[{"address":"04bfcab8722991ae774db48f934ca79cfb7dd991229153b9f732ba5334aafcd8e7266e47076996b55a14bf9913ee3145ce0cfc1372ada8ada74bd287450313534a","amount":50}],"id":"f089e8113094fab66b511402ecce021d0c1f664a719b5df1652a24d532b2f749"}]}' http://localhost:3001/mineBlock
+curl -H "Content-type:application/json" --data '{"data" : "add your stringfy data" }' http://localhost:3003/mineBlock
 ``` 
 
 ##### Add peer
 ```
-curl -H "Content-type:application/json" --data '{"peer" : "ws://localhost:6001"}' http://localhost:3001/addPeer
+curl -H "Content-type:application/json" --data '{"peers" : ["ws://bitpoint-node-1:6003", "ws://bitpoint-node-3:6005"]}' http://localhost:3004/addPeers
 ```
 #### Query connected peers
 ```
-curl http://localhost:3001/peers
+curl http://localhost:3003/peers
 ```
 
 
-#### A tutorial for building a cryptocurrency
+#### A tutorial and credits for building a cryptocurrency 
+
 ```
 https://lhartikk.github.io/
+
 ```
 

@@ -128,14 +128,17 @@ const broadcastLatest = (): void => {
     broadcast(responseLatestMsg());
 };
 
-const connectToPeers = (newPeer: string): void => {
-    const ws: WebSocket = new WebSocket(newPeer);
-    ws.on('open', () => {
-        initConnection(ws);
-    });
-    ws.on('error', () => {
-        console.log('connection failed');
-    });
+const connectToPeers = (newPeers: string[]): void => {
+    newPeers.map((newPeer) => {
+        console.log('---------------', newPeer);
+        const ws: WebSocket = new WebSocket(newPeer);
+        ws.on('open', () => {
+            initConnection(ws);
+        });
+        ws.on('error', () => {
+            console.log('connection failed');
+        });
+    })
 };
 
 export {connectToPeers, broadcastLatest, initP2PServer, getSockets};
