@@ -8,12 +8,12 @@ class Block {
     public hash: string;
     public previousHash: string;
     public timestamp: number;
-    public data: string;
+    public data: object;
     public difficulty: number;
     public nonce: number;
 
     constructor(index: number, hash: string, previousHash: string,
-                timestamp: number, data: string, difficulty: number, nonce: number) {
+                timestamp: number, data: object, difficulty: number, nonce: number) {
         this.index = index;
         this.previousHash = previousHash;
         this.timestamp = timestamp;
@@ -25,7 +25,8 @@ class Block {
 }
 
 const genesisBlock: Block = new Block(
-    0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '', 1465154705, 'my genesis block!!', 0, 0
+    0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '',
+    1465154705, {data: 'my genesis block!!'}, 0, 0
 );
 
 let blockchain: Block[] = [genesisBlock];
@@ -64,7 +65,7 @@ const getAdjustedDifficulty = (latestBlock: Block, aBlockchain: Block[]) => {
 
 const getCurrentTimestamp = (): number => Math.round(new Date().getTime() / 1000);
 
-const generateNextBlock = (blockData: string) => {
+const generateNextBlock = (blockData: object) => {
     const previousBlock: Block = getLatestBlock();
     const difficulty: number = getDifficulty(getBlockchain());
     console.log('difficulty: ' + difficulty);
@@ -76,7 +77,7 @@ const generateNextBlock = (blockData: string) => {
     return newBlock;
 };
 
-const findBlock = (index: number, previousHash: string, timestamp: number, data: string, difficulty: number): Block => {
+const findBlock = (index: number, previousHash: string, timestamp: number, data: object, difficulty: number): Block => {
     let nonce = 0;
     while (true) {
         const hash: string = calculateHash(index, previousHash, timestamp, data, difficulty, nonce);
@@ -90,7 +91,7 @@ const findBlock = (index: number, previousHash: string, timestamp: number, data:
 const calculateHashForBlock = (block: Block): string =>
     calculateHash(block.index, block.previousHash, block.timestamp, block.data, block.difficulty, block.nonce);
 
-const calculateHash = (index: number, previousHash: string, timestamp: number, data: string,
+const calculateHash = (index: number, previousHash: string, timestamp: number, data: object,
                        difficulty: number, nonce: number): string =>
     CryptoJS.SHA256(index + previousHash + timestamp + data + difficulty + nonce).toString();
 
@@ -105,7 +106,7 @@ const isValidBlockStructure = (block: Block): boolean => {
         && typeof block.hash === 'string'
         && typeof block.previousHash === 'string'
         && typeof block.timestamp === 'number'
-        && typeof block.data === 'string';
+        && typeof block.data === 'object';
 };
 
 const isValidNewBlock = (newBlock: Block, previousBlock: Block): boolean => {

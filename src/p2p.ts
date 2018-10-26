@@ -60,7 +60,7 @@ const initMessageHandler = (ws: WebSocket) => {
                 const receivedBlocks: Block[] = JSONToObject<Block[]>(message.data);
                 if (receivedBlocks === null) {
                     console.log('invalid blocks received:');
-                    console.log(message.data)
+                    console.log(message.data);
                     break;
                 }
                 handleBlockchainResponse(receivedBlocks);
@@ -130,7 +130,6 @@ const broadcastLatest = (): void => {
 
 const connectToPeers = (newPeers: string[]): void => {
     newPeers.map((newPeer) => {
-        console.log('---------------', newPeer);
         const ws: WebSocket = new WebSocket(newPeer);
         ws.on('open', () => {
             initConnection(ws);
@@ -138,7 +137,7 @@ const connectToPeers = (newPeers: string[]): void => {
         ws.on('error', () => {
             console.log('connection failed');
         });
-    })
+    });
 };
 
 export {connectToPeers, broadcastLatest, initP2PServer, getSockets};

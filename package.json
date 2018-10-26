@@ -6,7 +6,9 @@
     "prestart": "npm run compile",
     "start": "node src/main.js",
     "compile": "tsc",
-    "test": "node test.js"
+    "test": "node test.js",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "lint:fix": "tslint -c tslint.json -p tsconfig.json --fix"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -15,6 +17,7 @@
     "express": "~4.11.1",
     "lodash": "^4.17.4",
     "ts-node": "^3.2.0",
+    "tslint": "^5.10.0",
     "typescript": "^2.4.1",
     "ws": "^3.0.0"
   },

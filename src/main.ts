@@ -1,7 +1,8 @@
-require('dotenv').config()
+// tslint:disable-next-line
+require('dotenv').config();
 import * as  bodyParser from 'body-parser';
 import * as express from 'express';
-import * as _ from 'lodash';     
+import * as _ from 'lodash';
 
 import {Block, generateNextBlock, getBlockchain} from './blockchain';
 import {connectToPeers, getSockets, initP2PServer} from './p2p';
@@ -9,16 +10,13 @@ import {connectToPeers, getSockets, initP2PServer} from './p2p';
 const httpPort: number = parseInt(process.env.HTTP_PORT) || 3003;
 const p2pPort: number = parseInt(process.env.P2P_PORT) || 6003;
 
-
 const initHttpServer = (myHttpPort: number) => {
     const app = express();
     app.use(bodyParser.json());
 
-    // connectToPeers(["ws://localhost:6005", "ws://localhost:6004"]);
-
     app.use((err, req, res, next) => {
         if (err) {
-            res.status(400).send(err.message)
+            res.status(400).send(err.message);
         }
     });
 
