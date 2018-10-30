@@ -68,7 +68,7 @@ curl http://localhost:3003/blocks
 
 ##### Mine the first block with only a coinbase transaction
 ```
-curl -H "Content-type:application/json" --data '{"data" : "add your stringfy data" }' http://localhost:3003/mineBlock
+curl -H "Content-type:application/json" --data '{"data" : { "to": "1234", "from": "4321", "point": 20, "reason": "bla bla" } }' http://localhost:3003/mineBlock
 ``` 
 
 ##### Add peer

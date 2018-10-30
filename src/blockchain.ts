@@ -1,6 +1,6 @@
 import * as CryptoJS from 'crypto-js';
-import {broadcastLatest} from './p2p';
-import {hexToBinary} from './util';
+import { broadcastLatest } from './p2p';
+import { hexToBinary } from './util';
 
 class Block {
 
@@ -26,7 +26,7 @@ class Block {
 
 const genesisBlock: Block = new Block(
     0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '',
-    1465154705, {data: 'my genesis block!!'}, 0, 0
+    1465154705, { data: 'my genesis block!!' }, 0, 0
 );
 
 let blockchain: Block[] = [genesisBlock];
@@ -137,7 +137,7 @@ const getAccumulatedDifficulty = (aBlockchain: Block[]): number => {
 };
 
 const isValidTimestamp = (newBlock: Block, previousBlock: Block): boolean => {
-    return ( previousBlock.timestamp - 60 < newBlock.timestamp )
+    return (previousBlock.timestamp - 60 < newBlock.timestamp)
         && newBlock.timestamp - 60 < getCurrentTimestamp();
 };
 
@@ -202,4 +202,12 @@ const replaceChain = (newBlocks: Block[]) => {
     }
 };
 
-export {Block, getBlockchain, getLatestBlock, generateNextBlock, isValidBlockStructure, replaceChain, addBlockToChain};
+export {
+    Block,
+    getBlockchain,
+    getLatestBlock,
+    generateNextBlock,
+    isValidBlockStructure,
+    replaceChain,
+    addBlockToChain
+};
