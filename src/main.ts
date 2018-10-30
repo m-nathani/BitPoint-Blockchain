@@ -39,9 +39,9 @@ const initHttpServer = (myHttpPort: number) => {
         }
     });
     app.get('/points/:nic', (req, res) => {
-        const blocks = _.find(getBlockchain(), { data: { nic: req.params.nic } });
-        res.send(blocks);
-
+        const blocks = _.filter(getBlockchain(), { data: { to: req.params.nic } })
+        const point = blocks.reduce((s, f) => s + f.data.point, 0);
+        res.send({ point });
     });
     app.get('/peers', (req, res) => {
         res.send(getSockets().map((s: any) => s._socket.remoteAddress + ':' + s._socket.remotePort));
