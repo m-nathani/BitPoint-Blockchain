@@ -14,6 +14,8 @@ const initHttpServer = (myHttpPort: number) => {
     const app = express();
     app.use(bodyParser.json());
 
+    app.use(bodyParser.urlencoded({ extended: false }))
+
     app.use((err, req, res, next) => {
         if (err) {
             res.status(400).send(err.message);
@@ -35,13 +37,27 @@ const initHttpServer = (myHttpPort: number) => {
         if (newBlock === null) {
             res.status(400).send('could not generate block');
         } else {
-            res.send(newBlock);
+            const newBlockResponse = {
+                meta: {
+                    status: res.statusCode,
+                    message: res.statusMessage || 'success'
+                },
+                data: { block: newBlock } || {}
+            }
+            res.send(newBlockResponse);
         }
     });
     app.get('/points/:nic', (req, res) => {
-        const blocks = _.find(getBlockchain(), { data: { nic: req.params.nic } });
-        res.send(blocks);
-
+        const blocks = _.filter(getBlockchain(), { data: { to: req.params.nic } })
+        const point = blocks.reduce((s, f) => s + f.data.point, 0);
+        const pointResponse = {
+            meta: {
+                status: res.statusCode,
+                message: res.statusMessage || 'success'
+            },
+            data: { point } || {}
+        }
+        res.send(pointResponse);
     });
     app.get('/peers', (req, res) => {
         res.send(getSockets().map((s: any) => s._socket.remoteAddress + ':' + s._socket.remotePort));
