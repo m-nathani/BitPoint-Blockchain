@@ -66,9 +66,14 @@ HTTP_PORT=3003 P2P_PORT=6003 npm start
 curl http://localhost:3003/blocks
 ```
 
-##### Mine the first block with only a coinbase transaction
+##### Mine the block with a bitpoint transaction
 ```
 curl -H "Content-type:application/json" --data '{"data" : { "to": "1234", "from": "4321", "point": 20, "reason": "bla bla" } }' http://localhost:3003/mineBlock
+``` 
+
+##### Get points for a bitpoint user
+```
+curl  http://localhost:3003/points/:nic
 ``` 
 
 ##### Add peer

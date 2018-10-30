@@ -13,7 +13,7 @@ class Block {
     public nonce: number;
 
     constructor(index: number, hash: string, previousHash: string,
-                timestamp: number, data: object, difficulty: number, nonce: number) {
+        timestamp: number, data: object, difficulty: number, nonce: number) {
         this.index = index;
         this.previousHash = previousHash;
         this.timestamp = timestamp;
@@ -44,9 +44,10 @@ const DIFFICULTY_ADJUSTMENT_INTERVAL: number = 10;
 const getDifficulty = (aBlockchain: Block[]): number => {
     const latestBlock: Block = aBlockchain[blockchain.length - 1];
     if (latestBlock.index % DIFFICULTY_ADJUSTMENT_INTERVAL === 0 && latestBlock.index !== 0) {
-        return getAdjustedDifficulty(latestBlock, aBlockchain);
+        const difficulty = getAdjustedDifficulty(latestBlock, aBlockchain)
+        return difficulty < 0 ? 0 : difficulty;
     } else {
-        return latestBlock.difficulty;
+        return latestBlock.difficulty < 0 ? 0 : latestBlock.difficulty;
     }
 };
 
@@ -92,7 +93,7 @@ const calculateHashForBlock = (block: Block): string =>
     calculateHash(block.index, block.previousHash, block.timestamp, block.data, block.difficulty, block.nonce);
 
 const calculateHash = (index: number, previousHash: string, timestamp: number, data: object,
-                       difficulty: number, nonce: number): string =>
+    difficulty: number, nonce: number): string =>
     CryptoJS.SHA256(index + previousHash + timestamp + data + difficulty + nonce).toString();
 
 const addBlock = (newBlock: Block) => {
