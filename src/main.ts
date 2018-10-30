@@ -4,8 +4,8 @@ import * as  bodyParser from 'body-parser';
 import * as express from 'express';
 import * as _ from 'lodash';
 
-import {Block, generateNextBlock, getBlockchain} from './blockchain';
-import {connectToPeers, getSockets, initP2PServer} from './p2p';
+import { Block, generateNextBlock, getBlockchain } from './blockchain';
+import { connectToPeers, getSockets, initP2PServer } from './p2p';
 
 const httpPort: number = parseInt(process.env.HTTP_PORT) || 3003;
 const p2pPort: number = parseInt(process.env.P2P_PORT) || 6003;
@@ -19,12 +19,11 @@ const initHttpServer = (myHttpPort: number) => {
             res.status(400).send(err.message);
         }
     });
-
     app.get('/blocks', (req, res) => {
         res.send(getBlockchain());
     });
     app.get('/block/:hash', (req, res) => {
-        const block = _.find(getBlockchain(), {'hash' : req.params.hash});
+        const block = _.find(getBlockchain(), { 'hash': req.params.hash });
         res.send(block);
     });
     app.post('/mineBlock', (req, res) => {
@@ -39,6 +38,11 @@ const initHttpServer = (myHttpPort: number) => {
             res.send(newBlock);
         }
     });
+    app.get('/points/:nic', (req, res) => {
+        const blocks = _.filter(getBlockchain(), { data: { to: req.params.nic } })
+        const point = blocks.reduce((s, f) => s + f.data.point, 0);
+        res.send({ point });
+    });
     app.get('/peers', (req, res) => {
         res.send(getSockets().map((s: any) => s._socket.remoteAddress + ':' + s._socket.remotePort));
     });
@@ -48,7 +52,7 @@ const initHttpServer = (myHttpPort: number) => {
     });
 
     app.post('/stop', (req, res) => {
-        res.send({'msg' : 'stopping server'});
+        res.send({ 'msg': 'stopping server' });
         process.exit();
     });
     app.listen(myHttpPort, () => {

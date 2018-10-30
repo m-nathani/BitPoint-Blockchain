@@ -1,6 +1,6 @@
 import * as WebSocket from 'ws';
-import {Server} from 'ws';
-import {addBlockToChain, Block, getBlockchain, getLatestBlock, isValidBlockStructure, replaceChain} from './blockchain';
+import { Server } from 'ws';
+import { addBlockToChain, Block, getBlockchain, getLatestBlock, isValidBlockStructure, replaceChain } from './blockchain';
 
 const sockets: WebSocket[] = [];
 
@@ -16,7 +16,7 @@ class Message {
 }
 
 const initP2PServer = (p2pPort: number) => {
-    const server: Server = new WebSocket.Server({port: p2pPort});
+    const server: Server = new WebSocket.Server({ port: p2pPort });
     server.on('connection', (ws: WebSocket) => {
         initConnection(ws);
     });
@@ -72,9 +72,9 @@ const initMessageHandler = (ws: WebSocket) => {
 const write = (ws: WebSocket, message: Message): void => ws.send(JSON.stringify(message));
 const broadcast = (message: Message): void => sockets.forEach((socket) => write(socket, message));
 
-const queryChainLengthMsg = (): Message => ({'type': MessageType.QUERY_LATEST, 'data': null});
+const queryChainLengthMsg = (): Message => ({ 'type': MessageType.QUERY_LATEST, 'data': null });
 
-const queryAllMsg = (): Message => ({'type': MessageType.QUERY_ALL, 'data': null});
+const queryAllMsg = (): Message => ({ 'type': MessageType.QUERY_ALL, 'data': null });
 
 const responseChainMsg = (): Message => ({
     'type': MessageType.RESPONSE_BLOCKCHAIN, 'data': JSON.stringify(getBlockchain())
@@ -140,4 +140,4 @@ const connectToPeers = (newPeers: string[]): void => {
     });
 };
 
-export {connectToPeers, broadcastLatest, initP2PServer, getSockets};
+export { connectToPeers, broadcastLatest, initP2PServer, getSockets };
