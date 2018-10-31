@@ -14,6 +14,8 @@ const initHttpServer = (myHttpPort: number) => {
     const app = express();
     app.use(bodyParser.json());
 
+    app.use(bodyParser.urlencoded({ extended: false }))
+
     app.use((err, req, res, next) => {
         if (err) {
             res.status(400).send(err.message);
